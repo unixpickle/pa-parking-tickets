@@ -2,6 +2,8 @@ import random
 
 import requests
 
+from cross_product import RandomCrossProduct
+
 
 def check_response(plate):
     response = requests.post(
@@ -35,8 +37,8 @@ def all_plates():
         for n4 in numbers
     ]
     letter_plates = [l1 + l2 + l3 for l1 in letters for l2 in letters for l3 in letters]
-    while True:
-        yield random.choice(letter_plates) + random.choice(num_plates)
+    for letters, numbers in RandomCrossProduct(letter_plates, num_plates):
+        yield letters + numbers
 
 
 def main():
