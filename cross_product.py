@@ -26,6 +26,9 @@ class RandomCrossProduct:
                 idx = random.randrange(len(bucket_items))
                 obj = bucket_items[idx]
                 del bucket_items[idx]
-                yield (bucket, obj)
+                yield bucket + obj
                 break
             total_count -= 1
+
+    def __len__(self):
+        return len(self._set1) * len(self._set2)

@@ -3,6 +3,7 @@ import sys
 import time
 
 import requests
+from tqdm.auto import tqdm
 
 from cross_product import RandomCrossProduct
 from ticket_info import tickets_for_plate, ticket_details
@@ -19,8 +20,7 @@ def all_plates():
         for n4 in numbers
     ]
     letter_plates = [l1 + l2 + l3 for l1 in letters for l2 in letters for l3 in letters]
-    for letters, numbers in RandomCrossProduct(letter_plates, num_plates):
-        yield letters + numbers
+    return RandomCrossProduct(letter_plates, num_plates)
 
 
 def main():
@@ -28,7 +28,7 @@ def main():
     requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member
 
     session = requests.Session()
-    for plate in all_plates():
+    for plate in tqdm(all_plates()):
         try:
             for ticket in tickets_for_plate(plate, session=session):
                 if ticket["details_id"]:
